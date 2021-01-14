@@ -17,7 +17,7 @@
             "MyApp::MyApp.LambdaEntryPoint::FunctionHandlerAsync"
           ]
         },
-        "ImageUri": "<Update after `dotnet lambda push-image`>",
+        "ImageUri": "",
         "MemorySize": 256,
         "Timeout": 30,
         "Role": null,
