@@ -23,7 +23,7 @@ jobs:
       
       - name: build and test
         run: dotnet test
-        working-directory: ./MyApp
+        working-directory: ./MyApp.Tests
 
       - name: aws login
         if: github.ref == 'refs/heads/master'
