@@ -10,7 +10,7 @@
   "package-type" : "image",
   "function-name": "MyApp",
   "stack-name"   : "MyApp",
-  "s3-bucket"    : "<YOUR-S3-BUCKET>",
+  "s3-bucket"    : "layoric-us-east-deploy",
   "configuration" : "Release",
   "s3-prefix"     : "MyApp/",
   "template"      : "serverless.template",
