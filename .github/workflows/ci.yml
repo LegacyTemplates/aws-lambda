@@ -1,0 +1,38 @@
+name: CI/CD
+
+on:
+  pull_request: {}
+  push:
+    branches: [master]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2.0.0
+
+      - name: setup .net core
+        uses: actions/setup-dotnet@v1.4.0
+        with:
+          dotnet-version: 5.x
+
+      - name: install lambda tools
+        run: dotnet tool install -g Amazon.Lambda.Tools
+
+      
+      - name: build and test
+        run: dotnet test
+        working-directory: ./MyApp
+
+      - name: aws login
+        if: github.ref == 'refs/heads/master'
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+          
+      - name: deploy serverless
+        run: dotnet lambda deploy-serverless --template serverless.template
+        working-directory: ./MyApp
