@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Hosting;
+﻿using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Hosting;
 using ServiceStack;
 
 namespace MyApp
@@ -14,7 +15,7 @@ namespace MyApp
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(builder =>
                 {
-                    builder.UseModularStartup<Startup>();
+                    builder.UseStartup<Startup>();
                 });
     }
 }
