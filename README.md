@@ -1,4 +1,4 @@
-# aws-lambda-container
+# aws-lambda
 
 .NET 5.0 Amazon AWS Lambda Container Project Template
 
@@ -7,7 +7,7 @@ This project lets you create a .NET 5 empty ServiceStack web project ready for d
 Create new project with [x dotnet tool](https://docs.servicestack.net/dotnet-new):
 
     $ dotnet tool install -g x
-    $ x new aws-lambda-container ProjectName
+    $ x new aws-lambda ProjectName
 
 ### Prerequisites
 
