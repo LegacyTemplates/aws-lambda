@@ -1,12 +1,12 @@
 # aws-lambda
 
-.NET 5.0 Amazon AWS Lambda Container Project Template
+.NET 6.0 Amazon AWS Lambda Container Project Template
 
 [![](https://github.com/ServiceStack/docs/raw/master/docs/images/aws/servicestack-aws-lambda.png)](https://youtu.be/6ZfUc_28wQc)
 
 > YouTube: [https://youtu.be/6ZfUc_28wQc](https://youtu.be/6ZfUc_28wQc)
 
-This project lets you create a .NET 5 empty ServiceStack web project ready for deployment as a AWS Lambda Function wired with API GateWay and packaged via a Docker image.
+This project lets you create a .NET 6 empty ServiceStack web project ready for deployment as a AWS Lambda Function wired with API GateWay and packaged via a Docker image.
 
 Create new project with [x dotnet tool](https://docs.servicestack.net/dotnet-new):
 
