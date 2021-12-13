@@ -74,16 +74,28 @@ Below is an example of a IAM policy for a 'deploy' user that will be able to use
   ]
 }
 ```
+### Deployment process
+The provided GitHub Action YAML configures a workflow to build, test, package and deploy your ServiceStack Application with AWS Lambda and API GateWay.
+
+GitHub Action process requires populating the following Secrets:
+
+- AWS_ACCESS_KEY_ID
+- AWS_SECRET_ACCESS_KEY
+- AWS_REGION
+- DEPLOY_S3_BUCKET
+
+These secrets are used in the `ci.yml` GitHub Action to deploy the project using the `MyApp/serverless.templates` and `MyApp/aws-lambda-tools-defaults.json`.
+
+`AWS_REGION` and `DEPLOY_S3_BUCKET` are replaced in this file before running `dotnet lambda deploy-serverless --template serverless.template` for `MyApp`. 
+
+To run locally rather than using GitHub Actions as a build process, replace these values directly.
+
+Additional configuration is needed to get your application accessible from a friendly name subdomain. This can be done with API GateWay Mapping and Route 53.
 
 ### Use Case for ServiceStack App on AWS Lambda
 AWS Lambda Containers allows the use of standard docker tooling with AWS serverless offering which for low traffic volume applications or APIs can be an extremely cost effective way of hosting an application.
 
 AWS provides a Lambda [free-tier of 1M requests and 400,000GB-seconds of compute time per month](https://aws.amazon.com/lambda/pricing/). This can be enough traffic for many full ServiceStack APIs or applications.
-
-### Deployment process
-The provided GitHub Action YAML configures a workflow to build, test, package and deploy your ServiceStack Application with AWS Lambda and API GateWay.
-
-Additional configuration is needed to get your application accessible from a friendly name subdomain. This can be done with API GateWay Mapping and Route 53.
 
 ### Public access via custom subdomain
 If you want to use this ServiceStack app external from AWS, you'll need create a "Custom Domain" within API GateWay and setup an `A` record in Route53 to a hosted zone.
