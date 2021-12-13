@@ -6,14 +6,14 @@
     "All the command line options for the Lambda command can be specified in this file."
   ],
   "profile"     : "default",
-  "region"      : "us-east-1",
+  "region"      : "${AWS_REGION}",
   "package-type" : "image",
   "function-name": "MyApp",
   "stack-name"   : "MyApp",
-  "s3-bucket"    : "<YOUR-S3-BUCKET>",
+  "s3-bucket"    : "${DEPLOY_S3_BUCKET}",
   "configuration" : "Release",
   "s3-prefix"     : "MyApp/",
   "template"      : "serverless.template",
   "template-parameters" : "",
-  "docker-host-build-output-dir" : "./bin/Release/net5.0/linux-x64/publish"
+  "docker-host-build-output-dir" : "./bin/Release/net6.0/linux-x64/publish"
 }

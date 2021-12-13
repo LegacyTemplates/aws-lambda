@@ -24,6 +24,16 @@ jobs:
       - name: build and test
         run: dotnet test
         working-directory: ./MyApp.Tests
+        
+      
+      - name: Create serverless file from template
+        uses: danielr1996/envsubst-action@1.1.0
+        env:
+          DEPLOY_S3_BUCKET: ${{ secrets.DEPLOY_S3_BUCKET }}
+          AWS_REGION: ${{ secrets.AWS_REGION }}
+        with:
+          input: MyApp/aws-lambda-tools-defaults.json
+          output: MyApp/aws-lambda-tools-defaults.json
 
       - name: aws login
         if: github.ref == 'refs/heads/master'
@@ -31,7 +41,7 @@ jobs:
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: us-east-1
+          aws-region: ${{ secrets.AWS_REGION }}
           
       - name: deploy serverless
         run: dotnet lambda deploy-serverless --template serverless.template
