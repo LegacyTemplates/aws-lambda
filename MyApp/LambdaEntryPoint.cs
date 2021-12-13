@@ -1,8 +1,7 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 using ServiceStack;
-
-[assembly: HostingStartup(typeof(MyApp.AppHost))]
+using ServiceStack.Configuration;
 
 namespace MyApp
 {
@@ -35,7 +34,7 @@ namespace MyApp
         /// <param name="builder"></param>
         protected override void Init(IWebHostBuilder builder)
         {
-            
+            builder.UseStartup<Startup>();
         }
 
         
@@ -49,6 +48,38 @@ namespace MyApp
         protected override void Init(IHostBuilder builder)
         {
             
+        }
+    }
+
+    /// <summary>
+    /// Only used by AWS Lambda since the startup does not support IHostingStartup
+    /// </summary>
+    public class Startup
+    {
+        // This method gets called by the runtime. Use this method to add services to the container.
+        // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
+        public void ConfigureServices(IServiceCollection services)
+        {
+        }
+
+        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        {
+            if (env.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
+            }
+
+            app.Use(next => context =>
+            {
+                context.Request.EnableBuffering();
+                return next(context);
+            });
+
+            app.UseServiceStack(new AppHost
+            {
+                AppSettings = new AppSettings(),
+            });
         }
     }
 }
