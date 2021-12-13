@@ -1,5 +1,8 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
+using ServiceStack;
+
+[assembly: HostingStartup(typeof(MyApp.AppHost))]
 
 namespace MyApp
 {
@@ -24,6 +27,18 @@ namespace MyApp
 
         Amazon.Lambda.AspNetCoreServer.APIGatewayProxyFunction
     {
+        
+        /// <summary>
+        /// The builder has configuration, logging and Amazon API Gateway already configured. The startup class
+        /// needs to be configured in this method using the UseStartup<>() method.
+        /// </summary>
+        /// <param name="builder"></param>
+        protected override void Init(IWebHostBuilder builder)
+        {
+            
+        }
+
+        
         /// <summary>
         /// Use this override to customize the services registered with the IHostBuilder. 
         /// 
@@ -33,6 +48,7 @@ namespace MyApp
         /// <param name="builder"></param>
         protected override void Init(IHostBuilder builder)
         {
+            
         }
     }
 }
