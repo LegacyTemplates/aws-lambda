@@ -10,5 +10,10 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
     app.UseHttpsRedirection();
 }
+app.Use(async (context, next) => {
+    context.Request.EnableBuffering();
+    await next();
+});
+app.UseServiceStack(new AppHost());
 
 app.Run();
