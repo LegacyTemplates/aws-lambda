@@ -9,6 +9,7 @@
       "Type": "AWS::Serverless::Function",
       "Properties": {
         "PackageType": "Image",
+        "Runtime": "dotnet6",
         "ImageConfig": {
           "EntryPoint": [
             "/lambda-entrypoint.sh"
