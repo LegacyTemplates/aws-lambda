@@ -2,7 +2,7 @@
 <head>
     <title>My App</title>
     <style>
-        body { padding: 3em; }
+        body { padding: 1em 1em 0 1em; }
         body, input[type=text] { font: 32px/36px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif }
         input { padding:.25em .5em; margin-right:.5em; }
         a { color: #007bff }
@@ -11,64 +11,100 @@
     </style>
 </head>
 <body>
+
+<h2><a href="/ui/Hello">Hello</a> API</h2>
+<input type="text" id="txtName" onkeyup="callHello(this.value)">
+<div id="result"></div>
+
+<script src="/js/require.js"></script>
+<script src="/js/servicestack-client.js"></script>
+<script src="/types/js"></script>
+<script>
+var { JsonServiceClient, Hello } = exports
+
+var client = new JsonServiceClient();
+function callHello(name) {
+    client.get(new Hello({ name }))
+        .then(function(r) {
+            document.getElementById('result').innerHTML = r.result;
+        });
+}
+
+callHello(document.querySelector('#txtName').value = 'World')
+</script>
+
+<div style="font-size:20px;line-height:26px">
     
-    <h2><a href="/json/metadata?op=Hello">Hello</a> API</h2>
-    <input type="text" id="txtName" onkeyup="callHello(this.value)">
-    <div id="result"></div>
+    <h3>View in API Explorer</h3>
+    <ul>
+        <li>
+            <a href="/ui/Hello">Call API</a>
+        </li>
+        <li>
+            <a href="/ui/Hello?tab=details">View API Details</a>
+        </li>
+        <li>
+            <a href="/ui/Hello?tab=code">Browse API Source Code</a>
+        </li>
+    </ul>
+    
+    <h3>Using JsonServiceClient in Web Pages</h3>
+    
+    <p>
+        The easiest way to call your APIs in a webpage is to include your JavaScript DTOs <b>/types/js</b> and built-in
+        UMD <a href="https://docs.servicestack.net/servicestack-client-umd">@servicestack/client</a> library:
+    </p>
 
-    <h4>Example Code</h4>
-    <div style="font-size:20px;line-height:26px">
+<pre>&lt;script src="/js/require.js"&gt;&lt;/script&gt;
+&lt;script src="/js/servicestack-client.js"&gt;&lt;/script&gt;
+&lt;script src="/types/js"&gt;&lt;/script&gt;</pre>
 
-        <pre>&lt;script src="/js/servicestack-client.js"&gt;&lt;/script&gt;</pre>
+    <p>
+        We can then import and use the library and DTO types:
+    </p>
 
-        <h3>JavaScript</h3>
-        <pre>Object.assign(window, window['@servicestack/client']) //import
+    <pre>var { JsonServiceClient, Hello } = exports
 
 var client = new JsonServiceClient()
-client.get(new Hello({ name: name }))
-    .then(function(r) {
-        console.log(r.result)
+client.api(new Hello({ name }))
+    .then(function(api) {
+        if (api.succeeded) 
+            console.log(api.response)
     })
 </pre>
 
-    <h3>TypeScript</h3>
+    <h3>Using @servicestack/client in npm projects</h3>
+
+
+    <p>
+        Update your App's
+        <a href="https://docs.servicestack.net/typescript-add-servicestack-reference">TypeScript DTOs</a> and
+        compile to JS (requires <a href="https://www.typescriptlang.org/download">TypeScript</a>):
+    </p>
+
+    <pre>$ x scripts dtos</pre>
+
+    <h3>Including @servicestack/client &amp; Typed DTOs</h3>
+
+    <p>
+        Where you'll be able to use your APIs typed DTOs with ServiceStack's generic **JsonServiceClient**
+    </p>
+    
     <pre>$ npm install @servicestack/client</pre>
     <pre>import { JsonServiceClient } from '@servicestack/client'
+import { Hello } from './dtos'
 
 let client = new JsonServiceClient()
-let response = await client.get(new Hello({ name }))
+let api = await client.api(new Hello({ name }))
+if (api.succeeded) 
+    console.log(api.response.result)
 </pre>
 
-        <p>
-            Generate Typed DTOs using 
-            <a href="https://docs.servicestack.net/typescript-add-servicestack-reference">Add ServiceStack Reference</a> 
-        </p>
-    </div>
-            
-    <script src="/js/servicestack-client.js"></script>
-    <script>
-        Object.assign(window, window['@servicestack/client']); //import into global namespace
-
-        // generate typed dtos with https://docs.servicestack.net/typescript-add-servicestack-reference
-        var Hello = /** @class */ (function () {
-            function Hello(init) { Object.assign(this, init); }
-            Hello.prototype.createResponse = function () { return new HelloResponse(); };
-            Hello.prototype.getTypeName = function () { return 'Hello'; };
-            return Hello;
-        }());
-        var HelloResponse = /** @class */ (function () {
-            function HelloResponse(init) { Object.assign(this, init); }
-            return HelloResponse;
-        }());
-
-        var client = new JsonServiceClient();
-        function callHello(val) {
-            client.get(new Hello({ name: val }))
-                .then(function(r) {
-                    document.getElementById('result').innerHTML = r.result;
-                });
-        }
-    </script>
+    <p>
+        Typed DTOs generated using
+        <a href="https://docs.servicestack.net/typescript-add-servicestack-reference">TypeScript Add ServiceStack Reference</a>
+    </p>
+</div>
 
 </body>
 </html>

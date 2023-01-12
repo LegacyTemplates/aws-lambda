@@ -1,5 +1,7 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
+using ServiceStack;
+using ServiceStack.Configuration;
 
 namespace MyApp
 {
@@ -24,6 +26,7 @@ namespace MyApp
 
         Amazon.Lambda.AspNetCoreServer.APIGatewayProxyFunction
     {
+        
         /// <summary>
         /// The builder has configuration, logging and Amazon API Gateway already configured. The startup class
         /// needs to be configured in this method using the UseStartup<>() method.
@@ -31,10 +34,10 @@ namespace MyApp
         /// <param name="builder"></param>
         protected override void Init(IWebHostBuilder builder)
         {
-            builder
-                .UseStartup<Startup>();
+            builder.UseStartup<Startup>();
         }
 
+        
         /// <summary>
         /// Use this override to customize the services registered with the IHostBuilder. 
         /// 
@@ -44,6 +47,39 @@ namespace MyApp
         /// <param name="builder"></param>
         protected override void Init(IHostBuilder builder)
         {
+            
+        }
+    }
+
+    /// <summary>
+    /// Only used by AWS Lambda since the startup does not support IHostingStartup
+    /// </summary>
+    public class Startup
+    {
+        // This method gets called by the runtime. Use this method to add services to the container.
+        // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
+        public void ConfigureServices(IServiceCollection services)
+        {
+        }
+
+        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        {
+            if (env.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
+            }
+
+            app.Use(next => context =>
+            {
+                context.Request.EnableBuffering();
+                return next(context);
+            });
+
+            app.UseServiceStack(new AppHost
+            {
+                AppSettings = new AppSettings(),
+            });
         }
     }
 }
